@@ -1,15 +1,15 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata: 
-  name: networks
+  name: ingress
   namespace: argocd
 spec: 
   destination: 
-    namespace: hello-namespace
+    namespace: ingress-namespace
     server: "https://kubernetes.default.svc"
   project: default
   source: 
-    path: networks
+    path: ingress
     repoURL: "https://github.com/adrabenche/my-argocd-examples.git"
     targetRevision: master
   syncPolicy:
