@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-loadbalancer-volume
+  namespace: volume-pv-namespace
+spec:
+  selector:     
+    matchLabels:
+      app: loadbalancer
+  replicas: 1
+  template:     
+    metadata:
+      labels:   
+        app: loadbalancer
+    spec:
+      containers:
+      - name: cern-page
+        image: nginx:1.23.1
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: index-volume
+          mountPath: /usr/share/nginx/html
+      initContainers:
+      - name: install
+        image: busybox:1.28
+        command:
+        - wget
+        - "-O"
+        - "/work-dir/index.html"
+        - http://info.cern.ch/hypertext/WWW/TheProject.html
+        volumeMounts:
+        - name: index-volume
+          mountPath: "/work-dir"
+
+      volumes:
+        - name: index-volume
+          persistentVolumeClaim:
+            claimName: pvc-lbsr-rw
