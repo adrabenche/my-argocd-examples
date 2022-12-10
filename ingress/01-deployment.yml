@@ -15,4 +15,4 @@ spec:
    spec:
      containers:
      - name: ingress-container
-       image: us-docker.pkg.dev/google-samples/containers/gke/hello-app:2.0
+       image: us-docker.pkg.dev/google-samples/containers/gke/hello-app:1.0
