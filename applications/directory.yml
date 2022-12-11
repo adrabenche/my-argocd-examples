@@ -11,7 +11,7 @@ spec:
   source: 
     path: directory
     repoURL: "https://github.com/adrabenche/my-argocd-examples.git"
-    targetRevision: fix/rollback
+    targetRevision: master
     directory:
       recurse: true
   syncPolicy:
