@@ -1,17 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata: 
-  name: ingress
+  name: volume
   namespace: argocd
 spec: 
   destination: 
-    namespace: ingress-namespace
+    namespace: volume-pv-namespace
     server: "https://kubernetes.default.svc"
   project: default
   source: 
-    path: ingress
+    path: directory
     repoURL: "https://github.com/adrabenche/my-argocd-examples.git"
-    targetRevision: master
+    targetRevision: fix/rollback
+    directory:
+      recurse: true
   syncPolicy:
     syncOptions:
       - CreateNamespace=true

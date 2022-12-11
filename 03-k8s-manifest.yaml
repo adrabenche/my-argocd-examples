@@ -1,0 +1,44 @@
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: volume-pv-deployment
+  namespace: volume-pv-namespace
+spec: 
+  replicas: 3
+  selector:
+    matchLabels:
+      app: story
+  template:
+    metadata:
+      labels:
+        app: story
+    spec:
+      containers:
+        - name: story
+          image: adrabencheeduit/volumes:emptydir
+          volumeMounts: # Queda igual
+            - mountPath: /app/story
+              name: data-volume
+
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: persistent-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: volume-pv-service
+  namespace: volume-pv-namespace
+spec:
+  selector: 
+    app: story
+  type: NodePort
+  ports:
+    - protocol: "TCP"
+      port: 80
+      targetPort: 3000
+      nodePort: 30003
