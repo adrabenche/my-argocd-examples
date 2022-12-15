@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hello-ingress
+  namespace: ingress-namespace-test
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      more_set_headers "X-K8s-Node-Id: $remote_addr"
+      add_header Cache-Control "max-age=0, no-cache, no-store, must-revalidate";
+
+spec:
+  rules:
+  - host: blog.example.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: hello-blog
+            port:
+              number: 8080
+  - host: shop.example.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: hello-shop
+            port:
+              number: 8080
