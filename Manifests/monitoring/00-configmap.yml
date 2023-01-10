@@ -1,0 +1,12 @@
+---
+# ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-workspace
+  namespace: monitoring
+data:
+  admin_username: line64
+  postgres_db: "cardanodbsync"
+  postgres_host: "pg-c-db-sync-dev-aws-master.chzstvupwv3y.us-west-1.rds.amazonaws.com"
+  cardano_node_env: "preview"
