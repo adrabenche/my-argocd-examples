@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: 
+  name: vault
+  namespace: argocd
+spec: 
+  destination: 
+    namespace: vault
+    server: "https://kubernetes.default.svc"
+  project: vault
+  source: 
+    path: .
+    repoURL: "https://github.com/hashicorp/vault-helm.git"
+    targetRevision: HEAD
+    helm:
+      values: |
+        server:
+          affinity: ""
+          ha:
+            enabled: true
+            raft: 
+              enabled: true
+      releaseName: vault
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
