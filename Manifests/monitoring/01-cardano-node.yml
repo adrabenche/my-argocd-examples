@@ -1,0 +1,72 @@
+---
+# Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-cardano-node
+  namespace: monitoring
+spec:
+  selector:
+    app: deployment-workspace-cardano-node
+    type: NodePort
+  ports:
+  - name: cardano-node
+    protocol: TCP
+    port: 6001
+    targetPort: 6001
+---
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-workspace-cardano-node
+  namespace: monitoring
+  labels:
+    app: deployment-workspace-cardano-node
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deployment-workspace-cardano-node
+  template:
+    metadata:
+      labels:
+        app: deployment-workspace-cardano-node
+    spec:
+      containers:
+      - name: socat
+        image: alpine/socat:latest
+        imagePullPolicy: Always
+        args:
+          - -d
+          - TCP-LISTEN:6001,reuseaddr,fork
+          - UNIX-CONNECT:/opt/cardano/cnode/sockets/node.socket
+        volumeMounts:
+          - name: cardanoipc
+            mountPath: /opt/cardano/cnode/sockets
+
+      - name: cardano-node
+        image: inputoutput/cardano-node:1.35.4
+        resources:
+          limits:
+            cpu: "500m"
+        env:
+        - name: CARDANO_BLOCK_PRODUCER
+          value: "false"
+        - name: NETWORK
+          valueFrom:
+            configMapKeyRef:
+              name: configmap-workspace
+              key:  cardano_node_env
+        ports:
+          - containerPort: 6001
+        volumeMounts:
+          - name: cardanodb
+            mountPath: /data/db
+          - name: cardanoipc
+            mountPath: /ipc
+      volumes:
+        - name: cardanodb
+          emptyDir: {}
+        - name: cardanoipc
+          emptyDir: {}
