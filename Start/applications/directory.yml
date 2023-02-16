@@ -9,7 +9,7 @@ spec:
     server: "https://kubernetes.default.svc"
   project: default
   source: 
-    path: directory
+    path: Manifests/directory
     repoURL: "https://github.com/adrabenche/my-argocd-examples.git"
     targetRevision: master
     directory:
