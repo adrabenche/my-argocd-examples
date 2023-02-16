@@ -9,7 +9,7 @@ spec:
     server: "https://kubernetes.default.svc"
   project: default
   source: 
-    path: nginx
+    path: Manifests/nginx
     repoURL: "https://github.com/adrabenche/my-argocd-examples.git"
     targetRevision: projects
   syncPolicy:

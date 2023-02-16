@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata: 
-  name: ingress
+  name: sts
   namespace: argocd
 spec: 
   destination: 
-    namespace: ingress-namespace-test
+    namespace: sts
     server: "https://kubernetes.default.svc"
   project: default
   source: 
-    path: Manifests/ingress
+    path: Manifests/sts
     repoURL: "https://github.com/adrabenche/my-argocd-examples.git"
-    targetRevision: master
+    targetRevision: projects
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
