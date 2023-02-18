@@ -11,7 +11,7 @@ spec:
   source: 
     path: Manifests/sts
     repoURL: "https://github.com/adrabenche/my-argocd-examples.git"
-    targetRevision: projects
+    targetRevision: master
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
